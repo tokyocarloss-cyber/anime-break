@@ -1,7 +1,7 @@
 package com.animebreak.alpha;
 
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -17,25 +17,28 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle b) {
         super.onCreate(b);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         web = new WebView(this);
+        web.setBackgroundColor(Color.BLACK);
+        web.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        web.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
         s.setAllowFileAccess(true);
         s.setMediaPlaybackRequiresUserGesture(false);
-        s.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        s.setCacheMode(WebSettings.LOAD_DEFAULT);
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
+
         web.setWebViewClient(new WebViewClient());
         web.setWebChromeClient(new WebChromeClient());
         web.setFocusable(true);
         web.setFocusableInTouchMode(true);
-        web.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         setContentView(web);
         immersive();
-        web.loadUrl("file:///android_asset/v03.html");
+        web.loadUrl("file:///android_asset/index.html");
     }
 
     private void immersive() {

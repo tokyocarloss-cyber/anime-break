@@ -8,8 +8,8 @@ android {
         applicationId = "com.animebreak.alpha"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.5-gameplay-controls"
+        versionCode = 6
+        versionName = "0.6-visual-rework"
     }
 
     sourceSets {

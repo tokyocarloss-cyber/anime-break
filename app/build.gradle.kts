@@ -8,8 +8,8 @@ android {
         applicationId = "com.animebreak.alpha"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.3-combat-slice"
+        versionCode = 4
+        versionName = "0.4-art-slice-3d"
     }
 
     sourceSets {

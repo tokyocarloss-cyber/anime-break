@@ -32,7 +32,18 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
 
-        web.setWebViewClient(new WebViewClient());
+        web.setWebViewClient(new WebViewClient() {
+            @Override public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                view.evaluateJavascript(
+                    "(function(){if(window.__abInputLoader05)return;window.__abInputLoader05=true;" +
+                    "var s=document.createElement('script');s.src='input-fix-05.js';" +
+                    "s.onload=function(){console.log('Anime Break Gameplay Pass 0.5 ready')};" +
+                    "document.body.appendChild(s);})();",
+                    null
+                );
+            }
+        });
         web.setWebChromeClient(new WebChromeClient());
         web.setFocusable(true);
         web.setFocusableInTouchMode(true);

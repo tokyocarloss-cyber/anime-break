@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b14" />
+  <title>Anime Break — Alpha</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="gl"></canvas>
+  <div id="vignette"></div>
+
+  <section id="menu" class="screen active">
+    <div class="brand">
+      <div class="brand-mark">AB</div>
+      <h1>ANIME <span>BREAK</span></h1>
+      <p>RIFT ARENA • ALPHA 0.1</p>
+    </div>
+    <div class="main-actions">
+      <button id="playBtn" class="menu-btn primary">JOGAR</button>
+      <button id="optionsBtn" class="menu-btn">OPÇÕES</button>
+      <button id="replaysBtn" class="menu-btn">REPLAYS</button>
+    </div>
+    <div class="build-note">Protótipo jogável • combate offline contra bot</div>
+  </section>
+
+  <section id="selectScreen" class="screen panel-screen">
+    <header class="screen-header">
+      <button class="back" data-back="menu">‹</button>
+      <div><h2>ESCOLHA SEU LUTADOR</h2><p>18 slots • 6 universos-paródia</p></div>
+      <button id="randomBtn" class="chip">ALEATÓRIO</button>
+    </header>
+    <div id="fighterGrid" class="fighter-grid"></div>
+    <div class="select-footer">
+      <div id="selectedInfo">
+        <strong>NARU KAZE</strong><span>Equilibrado • mobilidade ninja</span>
+      </div>
+      <button id="startFightBtn" class="menu-btn primary small">LUTAR</button>
+    </div>
+  </section>
+
+  <section id="optionsScreen" class="screen panel-screen">
+    <header class="screen-header"><button class="back" data-back="menu">‹</button><div><h2>OPÇÕES</h2><p>visual, câmera e regras rápidas</p></div></header>
+    <div class="settings">
+      <label>GRÁFICOS<select id="graphics"><option>Baixo</option><option selected>Médio</option><option>Alto</option><option>Ultra</option></select></label>
+      <label>LIMITE DE FPS<select id="fps"><option>30</option><option selected>60</option><option>120</option><option value="0">Ilimitado</option></select></label>
+      <label>CÂMERA DINÂMICA<select id="cameraFx"><option>Desligado</option><option>Baixo</option><option selected>Médio</option><option>Alto</option></select></label>
+      <label>DANO<select id="damage"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
+      <label>TEMPO<select id="matchTime"><option value="60">1 min</option><option value="180" selected>3 min</option><option value="300">5 min</option><option value="600">10 min</option><option value="0">Infinito</option></select></label>
+      <label class="toggle-row">ENERGIA INFINITA<input id="infiniteEnergy" type="checkbox"><span class="toggle"></span></label>
+    </div>
+    <div class="hint">O preset gráfico altera resolução interna, sombras falsas e quantidade de cenário.</div>
+  </section>
+
+  <section id="replaysScreen" class="screen panel-screen">
+    <header class="screen-header"><button class="back" data-back="menu">‹</button><div><h2>REPLAYS</h2><p>highlights salvos localmente</p></div></header>
+    <div id="replayList" class="replay-list"><div class="empty">Nenhum highlight ainda.<br>Finalize uma luta para criar um registro.</div></div>
+  </section>
+
+  <div id="hud" class="hidden">
+    <div class="hud-top">
+      <div class="fighter-hud player"><span id="pName">NARU KAZE</span><div class="bar hp"><i id="pHp"></i></div><div class="bar en"><i id="pEn"></i></div></div>
+      <div id="timer" class="timer">03:00</div>
+      <div class="fighter-hud enemy"><span id="eName">BOT RIVAL</span><div class="bar hp"><i id="eHp"></i></div><div class="bar en"><i id="eEn"></i></div></div>
+    </div>
+    <div id="lockIndicator" class="lock-indicator">LOCK</div>
+    <div id="statusText" class="status-text"></div>
+    <button id="pauseBtn" class="pause">Ⅱ</button>
+
+    <div id="leftPad" class="joystick"><div class="joy-ring"><div id="joyKnob" class="joy-knob"></div></div></div>
+    <div class="controls-right">
+      <button id="lockBtn" class="action utility">◎<small>ALVO</small></button>
+      <button id="defBtn" class="action utility">◆<small>DEF</small></button>
+      <button id="dashBtn" class="action dash">➤<small>DASH</small></button>
+      <button id="atkBtn" class="action attack">拳<small>ATAQUE</small></button>
+      <button id="s1Btn" class="action skill"><span>1</span><small id="s1Label">CLONE</small><em></em></button>
+      <button id="s2Btn" class="action skill"><span>2</span><small id="s2Label">ESPIRAL</small><em></em></button>
+      <button id="s3Btn" class="action skill ultimate"><span>3</span><small id="s3Label">TEMPESTADE</small><em></em></button>
+    </div>
+  </div>
+
+  <div id="pauseOverlay" class="modal hidden"><div class="modal-card"><h3>PAUSADO</h3><button id="resumeBtn" class="menu-btn primary small">CONTINUAR</button><button id="quitBtn" class="menu-btn small">MENU</button></div></div>
+
+  <div id="koOverlay" class="ko hidden">
+    <div class="ko-panel"><div class="ko-eyes">◢ ◣</div><strong id="koName">NARU KAZE</strong><span>終わりだ！</span></div>
+    <div class="ko-word">K.O.</div>
+  </div>
+
+  <div id="resultOverlay" class="modal hidden"><div class="modal-card wide"><h3 id="resultTitle">VITÓRIA</h3><p id="resultStats"></p><button id="rematchBtn" class="menu-btn primary small">REVANCHE</button><button id="highlightsBtn" class="menu-btn small">VER HIGHLIGHT</button><button id="resultMenuBtn" class="menu-btn small">MENU</button></div></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
